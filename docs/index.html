@@ -1,0 +1,421 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KFC-P1 · Finance Reviewer — Human Approval View</title>
+<style>
+ body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f4f4f5;color:#18181b;margin:0;padding:0 0 60px}
+ .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+ header{background:#111;color:#fff;padding:22px 0}
+ header .wrap{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px}
+ h1{font-size:19px;margin:0;font-weight:700}
+ .model{background:#b3141c;color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:4px}
+ .bar{background:#fff;border-bottom:1px solid #e4e4e7;padding:16px 0}
+ .bar .wrap{display:flex;gap:26px;flex-wrap:wrap;align-items:center}
+ .stat b{font-size:22px} .stat span{color:#71717a;font-size:13px}
+ .clean b{color:#15803d} .flag b{color:#b3141c}
+ .note{color:#71717a;font-size:13px;margin-left:auto}
+ .risk{background:#111;color:#fff;border-radius:14px;padding:22px 26px;margin:18px 0 22px}
+ .risk-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+ .risk-kicker{text-transform:uppercase;letter-spacing:2px;font-size:11.5px;color:#f87171;font-weight:800;margin-bottom:6px}
+ .risk-total{font-size:34px;font-weight:800;letter-spacing:-.5px}
+ .risk-total span{font-size:14px;font-weight:600;color:#a1a1aa;letter-spacing:0}
+ .risk-note{color:#a1a1aa;font-size:13px;line-height:1.6;text-align:right}
+ .risk-rows{border-top:1px solid #27272a;margin-top:16px;padding-top:6px}
+ .risk-row{display:flex;align-items:baseline;gap:12px;padding:9px 0;font-size:14.5px;flex-wrap:wrap}
+ .risk-row b{min-width:250px}
+ .dot{width:10px;height:10px;border-radius:50%;flex:none;align-self:center}
+ .rvnd{font-family:ui-monospace,monospace;font-weight:700;min-width:150px}
+ .rwhy{color:#a1a1aa;font-size:13px}
+ .card{background:#fff;border:1px solid #e4e4e7;border-radius:12px;padding:18px 20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+ .row1{display:flex;justify-content:space-between;align-items:center;gap:10px}
+ .badge{color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+ .amount{font-size:24px;font-weight:800} .vnd{font-size:12px;color:#71717a;font-weight:600}
+ .vendor{font-size:17px;font-weight:700;margin-top:10px}
+ .meta{color:#71717a;font-size:13px;margin-top:2px;font-family:ui-monospace,monospace}
+ .reason-label{text-transform:uppercase;letter-spacing:1px;font-size:11px;color:#b3141c;font-weight:700;margin-top:16px}
+ .reason{font-size:16px;line-height:1.55;margin-top:6px;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px 14px}
+ .reason.pending{color:#a1a1aa;font-style:italic}
+ .rec{margin-top:10px;font-size:14px} .rec span{color:#71717a;font-size:12px} .rec b{color:#b3141c}
+ .note-block{margin-top:10px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.5}
+ .note-head{display:block;text-transform:uppercase;letter-spacing:1px;font-size:10.5px;color:#92400e;font-weight:700;margin-bottom:5px}
+ .cited{font-size:12.5px;color:#52525b;margin-top:10px;font-family:ui-monospace,monospace;background:#f4f4f5;padding:8px 10px;border-radius:6px}
+ .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:16px;border-top:1px solid #f0f0f0;padding-top:14px}
+ .esc{font-size:13px}
+ button{font-size:13px;font-weight:600;border-radius:8px;padding:9px 16px;border:1px solid #d4d4d8;cursor:pointer}
+ .approve{background:#15803d;color:#fff;border-color:#15803d}
+ .reject{background:#fff;color:#b3141c;border-color:#e4c0c0;margin-left:8px}
+ .done-strip{font-size:14.5px;padding:6px 2px;line-height:1.6}
+ .done-strip.ok{color:#15803d} .done-strip.no{color:#b3141c}
+ .rej-why{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 12px}
+ .why-head{font-size:12px;color:#991b1b;font-weight:700}
+ .whyb{background:#fff;color:#b3141c;border:1px solid #e4c0c0;margin-right:8px}
+ footer{text-align:center;color:#a1a1aa;font-size:12px;margin-top:30px;line-height:1.7}
+</style></head><body>
+<header><div class="wrap"><h1>KFC-P1 · AI Finance Reviewer — Human Approval View</h1><span class="model">MODEL DATA</span></div></header>
+<div class="bar"><div class="wrap">
+  <div class="stat"><b>761</b> <span>line-items reviewed</span></div>
+  <div class="stat clean"><b>757</b> <span>clean, auto-cleared</span></div>
+  <div class="stat flag"><b>4</b> <span>need a human</span></div>
+  <div class="note">Nothing is auto-approved. Each item below waits for a signature.</div>
+  <a href="#playground" style="font-weight:700;font-size:13px;color:#b3141c;text-decoration:none;white-space:nowrap">&#9889; Try the live catch &darr;</a>
+</div></div>
+<div class="wrap">
+ <div class="risk">
+  <div class="risk-head">
+   <div>
+    <div class="risk-kicker">⚠ The risk picture — this run</div>
+    <div class="risk-total">133,282,000 <span>VND held back from payment</span></div>
+   </div>
+   <div class="risk-note">None of it moves until a human signs.<br>The cards below are the case for each hold.</div>
+  </div>
+  <div class="risk-rows">
+   <div class="risk-row"><span class="dot" style="background:#b06a00"></span><b>1× Bank account changed</b><span class="rvnd">78,256,000 VND</span><span class="rwhy">headed to an unverified bank account</span></div><div class="risk-row"><span class="dot" style="background:#b3141c"></span><b>1× Duplicate payment</b><span class="rvnd">40,085,000 VND</span><span class="rwhy">would have been paid twice</span></div><div class="risk-row"><span class="dot" style="background:#52525b"></span><b>2× Unknown — needs human</b><span class="rvnd">14,941,000 VND</span><span class="rwhy">payee cannot be verified against master data</span></div>
+  </div>
+ </div>
+
+    <div class="card" id="card-R0011-L5" style="border-left:6px solid #52525b">
+      <div class="row1">
+        <span class="badge" style="background:#52525b">Unknown — needs human</span>
+        <span class="amount">9,553,000 <span class="vnd">VND</span></span>
+      </div>
+      <div class="vendor">Thanh Cong Cleaning Co. [MODEL]</div>
+      <div class="meta">KFC-HCM-003 · invoice INV-2606-2239 · line R0011-L5</div>
+      <div class="reason-label">Reviewer's read</div>
+      <div class="reason">Payment INV-2606-2239 for 9,553,000 VND to Thanh Cong Cleaning Co. was flagged under Rule R-001 because the vendor does not exist in the master data, leaving no approved record against which to verify the payment&#x27;s legitimacy.</div><div class="rec">AI recommendation <span>(advisory — you sign)</span>: <b>HOLD FOR VERIFICATION — the vendor cannot be validated without a master data record, and no basis exists to approve payment until the vendor is registered and confirmed.</b></div><div class="note-block"><span class="note-head">Draft escalation note (ready to send to F&amp;A)</span>F&amp;A: Please verify whether Thanh Cong Cleaning Co. is a legitimate, approved vendor before signing off on INV-2606-2239 for 9,553,000 VND — confirm that the vendor should be added to master data, that the invoice is supported by a valid contract or purchase order, and that the bank account details on file are correct.</div>
+      <div class="cited">Cited from: <b>R-001</b> — vendor not in master data — no basis to compare, needs human</div>
+      <div class="foot">
+        <span class="esc">Escalation required: <b>F&amp;A</b></span>
+        <span class="gate">
+          <button class="approve" onclick="signCard('R0011-L5')">&#9997; Sign &amp; approve</button>
+          <button class="reject" onclick="rejStart('R0011-L5')">Reject</button>
+        </span>
+      </div>
+      <div class="rej-why" id="why-R0011-L5" style="display:none">
+        <span class="why-head">Why reject? — the reason travels back with the return handoff</span>
+        <span class="why-btns"></span>
+      </div>
+    </div>
+    <div class="card" id="card-R0183-L5" style="border-left:6px solid #52525b">
+      <div class="row1">
+        <span class="badge" style="background:#52525b">Unknown — needs human</span>
+        <span class="amount">5,388,000 <span class="vnd">VND</span></span>
+      </div>
+      <div class="vendor">Phu My Hung Lease [MODEL]</div>
+      <div class="meta">KFC-HN-001 · invoice INV-2606-2240 · line R0183-L5</div>
+      <div class="reason-label">Reviewer's read</div>
+      <div class="reason">Payment INV-2606-2240 to vendor &#x27;Phu My Hung Lease&#x27; for 5,388,000 VND was flagged under Rule R-001 because the vendor is not present in master data, meaning there is no approved vendor record against which to validate this payment.</div><div class="rec">AI recommendation <span>(advisory — you sign)</span>: <b>HOLD FOR VERIFICATION — the vendor cannot be confirmed as an approved payee without a matching master data record, and no baseline exists to assess legitimacy of the invoice amount.</b></div><div class="note-block"><span class="note-head">Draft escalation note (ready to send to F&amp;A)</span>F&amp;A: Please verify whether &#x27;Phu My Hung Lease&#x27; (Invoice INV-2606-2240, 5,388,000 VND) should be added to vendor master data with proper onboarding documentation, and confirm whether this invoice obligation is legitimate and properly authorized before approving payment.</div>
+      <div class="cited">Cited from: <b>R-001</b> — vendor not in master data — no basis to compare, needs human</div>
+      <div class="foot">
+        <span class="esc">Escalation required: <b>F&amp;A</b></span>
+        <span class="gate">
+          <button class="approve" onclick="signCard('R0183-L5')">&#9997; Sign &amp; approve</button>
+          <button class="reject" onclick="rejStart('R0183-L5')">Reject</button>
+        </span>
+      </div>
+      <div class="rej-why" id="why-R0183-L5" style="display:none">
+        <span class="why-head">Why reject? — the reason travels back with the return handoff</span>
+        <span class="why-btns"></span>
+      </div>
+    </div>
+    <div class="card" id="card-R0194-L3" style="border-left:6px solid #b06a00">
+      <div class="row1">
+        <span class="badge" style="background:#b06a00">Bank account changed</span>
+        <span class="amount">78,256,000 <span class="vnd">VND</span></span>
+      </div>
+      <div class="vendor">Sao Mai Property Co. [MODEL]</div>
+      <div class="meta">KFC-DN-032 · invoice INV-2606-2238 · line R0194-L3</div>
+      <div class="reason-label">Reviewer's read</div>
+      <div class="reason">Payment INV-2606-2238 to Sao Mai Property Co. for 78,256,000 VND was flagged under rule R-002 because the payee account on the payment instruction (99988877766) does not match the vendor&#x27;s master record account (41661403828), indicating a bank account change that has not been verified.</div><div class="rec">AI recommendation <span>(advisory — you sign)</span>: <b>HOLD FOR VERIFICATION — a mismatched destination account on a payment of this size requires direct confirmation with the vendor before any funds are released.</b></div><div class="note-block"><span class="note-head">Draft escalation note (ready to send to CA + Cashier)</span>CA and Cashier: please verify with Sao Mai Property Co. through an independently sourced contact (not details supplied with the invoice) that account 99988877766 is their legitimate, authorised account before authorising payment of INV-2606-2238 for 78,256,000 VND; the master record currently holds account 41661403828 and no approved change has been recorded.</div>
+      <div class="cited">Cited from: <b>R-002</b> — payee account 99988877766 != master 41661403828</div>
+      <div class="foot">
+        <span class="esc">Escalation required: <b>CA + Cashier</b></span>
+        <span class="gate">
+          <button class="approve" onclick="signCard('R0194-L3')">&#9997; Sign &amp; approve</button>
+          <button class="reject" onclick="rejStart('R0194-L3')">Reject</button>
+        </span>
+      </div>
+      <div class="rej-why" id="why-R0194-L3" style="display:none">
+        <span class="why-head">Why reject? — the reason travels back with the return handoff</span>
+        <span class="why-btns"></span>
+      </div>
+    </div>
+    <div class="card" id="card-R0288-L2" style="border-left:6px solid #b3141c">
+      <div class="row1">
+        <span class="badge" style="background:#b3141c">Duplicate payment</span>
+        <span class="amount">40,085,000 <span class="vnd">VND</span></span>
+      </div>
+      <div class="vendor">Nam Long Retail Spaces [MODEL]</div>
+      <div class="meta">KFC-DN-024 · invoice INV-2605-1418 · line R0288-L2</div>
+      <div class="reason-label">Reviewer's read</div>
+      <div class="reason">Payment INV-2605-1418 to vendor Nam Long Retail Spaces for 40,085,000 VND has been flagged as a duplicate under rule R-001: the ledger shows this invoice was already paid under record PAID-00418.</div><div class="rec">AI recommendation <span>(advisory — you sign)</span>: <b>REJECT — the invoice amount of 40,085,000 VND to Nam Long Retail Spaces appears to have already been settled per ledger entry PAID-00418, and processing it again would result in a double payment.</b></div><div class="note-block"><span class="note-head">Draft escalation note (ready to send to CA)</span>CA: please verify that ledger entry PAID-00418 represents a completed, cleared payment to Nam Long Retail Spaces for invoice INV-2605-1418 (40,085,000 VND) before signing any approval or rejection of this transaction.</div>
+      <div class="cited">Cited from: <b>R-001</b> — invoice already PAID in ledger (PAID-00418)</div>
+      <div class="foot">
+        <span class="esc">Escalation required: <b>CA</b></span>
+        <span class="gate">
+          <button class="approve" onclick="signCard('R0288-L2')">&#9997; Sign &amp; approve</button>
+          <button class="reject" onclick="rejStart('R0288-L2')">Reject</button>
+        </span>
+      </div>
+      <div class="rej-why" id="why-R0288-L2" style="display:none">
+        <span class="why-head">Why reject? — the reason travels back with the return handoff</span>
+        <span class="why-btns"></span>
+      </div>
+    </div>
+ <!-- ======== LIVE PLAYGROUND (additive) — resubmit a real paid invoice, watch the catch ======== -->
+ <style>
+  @keyframes pgPulse {0%,100%{opacity:.35}50%{opacity:1}}
+  .pg-writing{animation:pgPulse 1.1s ease-in-out infinite;color:#b3141c;font-style:italic}
+  @keyframes pgLand {0%{background:#fef08a}100%{background:#fafafa}}
+  .pg-live{animation:pgLand 1.8s ease-out}
+  .pg-livetag{color:#15803d;font-weight:700}
+ </style>
+ <div class="card" id="playground" style="border-left:6px solid #111;margin-top:34px">
+  <div class="reason-label" style="color:#111;margin-top:0;font-size:12.5px">TRY THE LIVE CATCH — resubmit an already-paid invoice</div>
+  <p style="font-size:14px;color:#52525b;line-height:1.6;margin:8px 0 14px">This playground resubmits a real ledger entry and re-runs the duplicate check in your browser. The full 761-item pipeline runs locally: clone &rarr; <code>python3 serve.py</code></p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button id="pg-btn" style="background:#111;color:#fff;border-color:#111" onclick="pgRun()">&#8635; Resubmit a paid invoice</button>
+    <input type="password" id="pg-key" placeholder="Anthropic API key — optional, stays in your browser" autocomplete="off" style="flex:1;min-width:280px;font-size:13px;padding:9px 12px;border:1px solid #d4d4d8;border-radius:8px">
+  </div>
+  <div id="pg-out"></div>
+ </div>
+</div>
+<script>
+// Playground: real data, real check. Random PAID ledger entry is resubmitted as a
+// fresh line-item; the duplicate check below is the same strong-key lookup as
+// reviewer.py check_duplicate (vendor_id + invoice_number). Nothing is scripted.
+let pgLedger = null, pgMaster = null, pgIndex = null, pgBusy = false;
+const PG_TIERS = [[5000000,'HOD'],[20000000,'F&A'],[50000000,'CA'],[null,'CA + Cashier']]; // mirrors rules.json R-003
+// SYSTEM prompt verbatim from reason_writer.py — the one visible-AI moment.
+const PG_SYSTEM = 'You are the AI reviewer inside a human-gated finance approval flow. You are ' +
+'given ONE flagged payment finding with its exact evidence. Produce the three ' +
+'things the human approver needs, as a JSON object with exactly these keys:\n' +
+'  "reason"        - 1-2 plain-language sentences explaining the flag, naming ' +
+'the concrete evidence (payment id, account numbers, vendor) so it is traceable.\n' +
+'  "recommendation" - one of "REJECT", "HOLD FOR VERIFICATION", or ' +
+'"APPROVE WITH CAUTION", followed by a short clause saying why. This is ' +
+'advisory only — the human signs, never you.\n' +
+'  "escalation_note" - 1-2 sentences, ready to paste, addressed to the ' +
+'escalation level named in the finding, telling them exactly what to verify ' +
+'before signing.\n' +
+'HARD RULES: use ONLY the facts given — never invent a number, name, date, or ' +
+'claim not present. If the evidence says the vendor is unknown, do not guess ' +
+'who they are. Attribute rules correctly: the rule id in the finding is the ' +
+'rule that fired; the escalation level comes from the threshold rule (R-003). ' +
+'Reply with ONLY the JSON object, no fences, no preamble.';
+function pgEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+// Provider swap (finals card): detect provider from the pasted key, route to its
+// endpoint, same system prompt, same card. Unknown prefixes fall back to Anthropic —
+// identical to the submitted single-provider behavior.
+const PG_PROVIDERS = true;
+const PG_ENDPOINTS = {
+  anthropic: {
+    name: 'Claude Haiku 4.5',
+    color: '#b3141c',
+    spinner: 'bot-claude.gif',
+    url: 'https://api.anthropic.com/v1/messages',
+    headers: k => ({
+      'Content-Type': 'application/json',
+      'x-api-key': k,
+      'anthropic-version': '2023-06-01',
+      // Required for calling the Anthropic API directly from a browser.
+      // The key stays in the user's browser; nothing is proxied through us.
+      'anthropic-dangerous-direct-browser-access': 'true'
+    }),
+    body: (sys, usr) => ({ model: 'claude-haiku-4-5-20251001', max_tokens: 1024, system: sys,
+      messages: [{ role: 'user', content: usr }] }),
+    extract: d => d.content.filter(b => b.type === 'text').map(b => b.text).join('\n')
+  },
+  openai: {
+    name: 'GPT-4o mini',
+    color: '#0e7db8',
+    spinner: 'bot-gpt.gif',
+    url: 'https://api.openai.com/v1/chat/completions',
+    headers: k => ({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + k }),
+    body: (sys, usr) => ({ model: 'gpt-4o-mini',
+      messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }] }),
+    extract: d => d.choices[0].message.content
+  }
+};
+function pgProvider(key){
+  if (!PG_PROVIDERS) return 'anthropic';
+  if (key.startsWith('sk-ant-')) return 'anthropic';
+  if (key.startsWith('sk-')) return 'openai';
+  return 'anthropic';
+}
+function pgEscalation(amount){
+  for (const [upTo, level] of PG_TIERS) if (upTo === null || amount <= upTo) return level;
+  return 'CA + Cashier';
+}
+async function pgRun(){
+  if (pgBusy) return;
+  const btn = document.getElementById('pg-btn'), out = document.getElementById('pg-out');
+  pgBusy = true; btn.disabled = true; btn.textContent = 'Running the check…';
+  try {
+    if (!pgLedger){
+      const [lr, mr] = await Promise.all([fetch('data/paid_ledger.json'), fetch('data/vendor_master.json')]);
+      if (!lr.ok || !mr.ok) throw new Error('could not load ledger data (' + lr.status + '/' + mr.status + ')');
+      const ledger = await lr.json(), masterRows = await mr.json();
+      pgMaster = {}; masterRows.forEach(v => { pgMaster[v.vendor_id] = v; });
+      pgIndex = {}; ledger.forEach(p => { pgIndex[p.vendor_id + '|' + p.invoice_number] = p.payment_id; });
+      pgLedger = ledger; // assigned last so a failed load never leaves a half-built cache
+    }
+    const paid = pgLedger.filter(p => p.status === 'PAID');
+    const src = paid[Math.floor(Math.random() * paid.length)];
+    const lineId = 'R-LIVE-' + Math.random().toString(36).slice(2, 7).toUpperCase();
+    // R-001 strong-key lookup — same check as reviewer.py check_duplicate
+    const hit = pgIndex[src.vendor_id + '|' + src.invoice_number];
+    if (!hit) throw new Error('no ledger anchor found — data files out of sync');
+    const evidence = 'invoice already PAID in ledger (' + hit + ')';
+    const esc = pgEscalation(src.amount);
+    const vendorName = (pgMaster[src.vendor_id] || {}).vendor_name || src.vendor_id;
+    out.innerHTML =
+      '<div class="card" style="border-left:6px solid #b3141c;margin-bottom:0">' +
+      '<div class="row1"><span class="badge" style="background:#b3141c">Duplicate payment — caught live</span>' +
+      '<span class="amount">' + src.amount.toLocaleString() + ' <span class="vnd">VND</span></span></div>' +
+      '<div class="vendor">' + pgEsc(vendorName) + '</div>' +
+      '<div class="meta">' + pgEsc(src.store_id) + ' · invoice ' + pgEsc(src.invoice_number) + ' · line ' + lineId + ' — resubmitted just now, picked at random</div>' +
+      '<div class="cited">Cited from: <b>R-001</b> — ' + pgEsc(evidence) + '</div>' +
+      '<div class="reason-label" id="pg-rlabel">Reviewer\'s read</div>' +
+      '<div class="reason pending" id="pg-reason">AI reason pending — no key pasted, so the AI layer stays off. The deterministic catch above is complete without it.</div>' +
+      '<div id="pg-ai-extra"></div>' +
+      '<div class="foot"><span class="esc">Escalation required: <b>' + pgEsc(esc) + '</b></span>' +
+      '<span style="font-size:12px;color:#a1a1aa">held back from payment — a human signs, never the AI</span></div>' +
+      '</div>';
+    const key = document.getElementById('pg-key').value.trim();
+    if (key) await pgReason(src, vendorName, evidence, esc, key);
+  } catch (e) {
+    out.innerHTML = '<div class="reason pending" style="margin-top:14px">Playground error: ' + pgEsc(e.message) + '</div>';
+  } finally {
+    pgBusy = false; btn.disabled = false; btn.textContent = '↻ Resubmit a paid invoice';
+  }
+}
+async function pgReason(src, vendorName, evidence, esc, key){
+  const cfg = PG_ENDPOINTS[pgProvider(key)];
+  const el = document.getElementById('pg-reason');
+  el.className = 'reason pg-writing';
+  el.style.color = cfg.color;
+  el.innerHTML = '<img src="' + cfg.spinner + '" alt="" style="height:28px;vertical-align:-8px;margin-right:8px">' + cfg.name + ' is writing — from ONLY the evidence cited above…';
+  const facts = 'Finding: DUPLICATE\nVendor: ' + vendorName + '\nInvoice: ' + src.invoice_number +
+    '\nAmount: ' + src.amount.toLocaleString('en-US') + ' VND\nRule: R-001' +
+    '\nEvidence (verbatim): ' + evidence + '\nEscalation required: ' + esc;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 60000);
+  try {
+    const res = await fetch(cfg.url, {
+      method: 'POST',
+      headers: cfg.headers(key),
+      body: JSON.stringify(cfg.body(PG_SYSTEM, facts)),
+      signal: ctrl.signal
+    });
+    if (!res.ok){
+      let detail = ''; try { const e = await res.json(); detail = e?.error?.message ? ' — ' + e.error.message : ''; } catch {}
+      throw new Error('API ' + res.status + detail);
+    }
+    const data = await res.json();
+    const text = cfg.extract(data);
+    const clean = text.replace(/```json|```/g, '').trim();
+    let ai; try { ai = JSON.parse(clean); } catch { ai = { reason: clean }; }
+    if (!ai || typeof ai !== 'object') ai = { reason: clean };
+    el.className = 'reason pg-live';
+    el.style.color = '';
+    el.textContent = ai.reason || clean;
+    document.getElementById('pg-rlabel').innerHTML = 'Reviewer\'s read — <span class="pg-livetag">⚡ written live by <span style="background:' + cfg.color + ';color:#fff;padding:1px 7px;border-radius:5px;font-weight:800">' + cfg.name + '</span>, just now — check every number against the citation above</span>';
+    let extra = '';
+    if (ai.recommendation) extra += '<div class="rec">AI recommendation <span>(advisory — you sign)</span>: <b>' + pgEsc(ai.recommendation) + '</b></div>';
+    if (ai.escalation_note) extra += '<div class="note-block"><span class="note-head">Draft escalation note (ready to send to ' + pgEsc(esc) + ')</span>' + pgEsc(ai.escalation_note) + '</div>';
+    const pgName = '<b style="color:' + cfg.color + '">' + cfg.name + '</b>';
+    const pgMeta = pgProvider(key) === 'anthropic'
+      ? 'This demo runs ' + pgName + ' because I built with Claude; in production, this seat is whatever AI lives in your stack.'
+      : 'You just watched ' + pgName + ' take the same seat Claude held a moment ago — same rules, same evidence, same card.';
+    extra += '<div style="color:#3f3f46;font-style:italic;font-size:13.5px;line-height:1.65;margin-top:14px;padding:10px 14px;border-left:3px solid #f59e0b;background:#fffdf5;border-radius:0 8px 8px 0">Written from only the cited evidence — inventing a number, name, or date is against its rules. ' + pgMeta + ' <b>The model is swappable; the discipline is not.</b></div>';
+    document.getElementById('pg-ai-extra').innerHTML = extra;
+  } catch (e) {
+    const why = e.name === 'AbortError' ? 'timed out after 60s' : e.message;
+    el.className = 'reason pending';
+    el.style.color = '';
+    el.textContent = 'AI reason pending (' + why + ') — the deterministic catch above is complete without it';
+  } finally {
+    clearTimeout(timer);
+  }
+}
+</script>
+<footer>
+  KFC-P1 Agentic Finance Reviewer · deterministic where money moves, AI where the reason is written<br>
+  MODEL data — format real, vendors &amp; amounts modelled, not real KFC transactions.
+  Human-gate active: staged for signature, never auto-approved.
+</footer>
+
+<script>
+const PACKETS = {"R0011-L5": {"line_id": "R0011-L5", "request_id": "REQ-2606-0011", "store_id": "KFC-HCM-003", "vendor": "Thanh Cong Cleaning Co. [MODEL]", "invoice_number": "INV-2606-2239", "amount_vnd": 9553000, "status": "UNKNOWN", "cited_from": {"rule": "R-001", "input_row": "R0011-L5", "evidence": "vendor not in master data — no basis to compare, needs human"}, "escalation_required": "F&A", "decision": "STAGED FOR HUMAN APPROVAL", "ai": {"reason": "Payment INV-2606-2239 for 9,553,000 VND to Thanh Cong Cleaning Co. was flagged under Rule R-001 because the vendor does not exist in the master data, leaving no approved record against which to verify the payment's legitimacy.", "recommendation": "HOLD FOR VERIFICATION — the vendor cannot be validated without a master data record, and no basis exists to approve payment until the vendor is registered and confirmed.", "escalation_note": "F&A: Please verify whether Thanh Cong Cleaning Co. is a legitimate, approved vendor before signing off on INV-2606-2239 for 9,553,000 VND — confirm that the vendor should be added to master data, that the invoice is supported by a valid contract or purchase order, and that the bank account details on file are correct."}}, "R0183-L5": {"line_id": "R0183-L5", "request_id": "REQ-2606-0183", "store_id": "KFC-HN-001", "vendor": "Phu My Hung Lease [MODEL]", "invoice_number": "INV-2606-2240", "amount_vnd": 5388000, "status": "UNKNOWN", "cited_from": {"rule": "R-001", "input_row": "R0183-L5", "evidence": "vendor not in master data — no basis to compare, needs human"}, "escalation_required": "F&A", "decision": "STAGED FOR HUMAN APPROVAL", "ai": {"reason": "Payment INV-2606-2240 to vendor 'Phu My Hung Lease' for 5,388,000 VND was flagged under Rule R-001 because the vendor is not present in master data, meaning there is no approved vendor record against which to validate this payment.", "recommendation": "HOLD FOR VERIFICATION — the vendor cannot be confirmed as an approved payee without a matching master data record, and no baseline exists to assess legitimacy of the invoice amount.", "escalation_note": "F&A: Please verify whether 'Phu My Hung Lease' (Invoice INV-2606-2240, 5,388,000 VND) should be added to vendor master data with proper onboarding documentation, and confirm whether this invoice obligation is legitimate and properly authorized before approving payment."}}, "R0194-L3": {"line_id": "R0194-L3", "request_id": "REQ-2606-0194", "store_id": "KFC-DN-032", "vendor": "Sao Mai Property Co. [MODEL]", "invoice_number": "INV-2606-2238", "amount_vnd": 78256000, "status": "BANK_CHANGE", "cited_from": {"rule": "R-002", "input_row": "R0194-L3", "evidence": "payee account 99988877766 != master 41661403828"}, "escalation_required": "CA + Cashier", "decision": "STAGED FOR HUMAN APPROVAL", "ai": {"reason": "Payment INV-2606-2238 to Sao Mai Property Co. for 78,256,000 VND was flagged under rule R-002 because the payee account on the payment instruction (99988877766) does not match the vendor's master record account (41661403828), indicating a bank account change that has not been verified.", "recommendation": "HOLD FOR VERIFICATION — a mismatched destination account on a payment of this size requires direct confirmation with the vendor before any funds are released.", "escalation_note": "CA and Cashier: please verify with Sao Mai Property Co. through an independently sourced contact (not details supplied with the invoice) that account 99988877766 is their legitimate, authorised account before authorising payment of INV-2606-2238 for 78,256,000 VND; the master record currently holds account 41661403828 and no approved change has been recorded."}}, "R0288-L2": {"line_id": "R0288-L2", "request_id": "REQ-2606-0288", "store_id": "KFC-DN-024", "vendor": "Nam Long Retail Spaces [MODEL]", "invoice_number": "INV-2605-1418", "amount_vnd": 40085000, "status": "DUPLICATE", "cited_from": {"rule": "R-001", "input_row": "R0288-L2", "evidence": "invoice already PAID in ledger (PAID-00418)"}, "escalation_required": "CA", "decision": "STAGED FOR HUMAN APPROVAL", "ai": {"reason": "Payment INV-2605-1418 to vendor Nam Long Retail Spaces for 40,085,000 VND has been flagged as a duplicate under rule R-001: the ledger shows this invoice was already paid under record PAID-00418.", "recommendation": "REJECT — the invoice amount of 40,085,000 VND to Nam Long Retail Spaces appears to have already been settled per ledger entry PAID-00418, and processing it again would result in a double payment.", "escalation_note": "CA: please verify that ledger entry PAID-00418 represents a completed, cleared payment to Nam Long Retail Spaces for invoice INV-2605-1418 (40,085,000 VND) before signing any approval or rejection of this transaction."}}};
+const REJECT_WHY = {
+  "DUPLICATE":   "Confirmed duplicate — invoice already settled in the ledger",
+  "BANK_CHANGE": "Payee bank account does not match vendor master — unverified change",
+  "UNKNOWN":     "Vendor cannot be verified against master data"
+};
+function dl(name, text){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type:'text/markdown'}));
+  a.download = name; a.click(); URL.revokeObjectURL(a.href);
+}
+function mdFor(p, decision, why){
+  const ts = new Date().toISOString();
+  const ai = p.ai || {};
+  let m = '# handoff — ' + decision + ' · ' + p.vendor + ' · ' + p.amount_vnd.toLocaleString() + ' VND\n';
+  m += '> From: KFC-P1 AI Finance Reviewer · human decision at ' + ts + '\n';
+  m += '> Complete decision state, generated verbatim from the review record.\n';
+  m += '> Nothing added, nothing summarized away, nothing invented.\n\n';
+  m += '## Decision\n';
+  m += decision === 'SIGNED'
+     ? 'SIGNED for payment by the ' + p.escalation_required + ' level.\n\n'
+     : 'REJECTED — reason: ' + why + '\nReturn to requester: ' + p.store_id + '-manager\n\n';
+  m += '## Why it was flagged\n' + (ai.reason || p.cited_from.evidence) + '\n\n';
+  m += 'Cited from: ' + p.cited_from.rule + ' — ' + p.cited_from.evidence + '\n\n';
+  if (ai.recommendation) m += '## AI case (as read by the signer)\n- Recommendation: ' + ai.recommendation + '\n- Escalation note: ' + (ai.escalation_note || '-') + '\n\n';
+  m += '## Payment record (machine-readable, verbatim)\n```json\n' + JSON.stringify(p, null, 2) + '\n```\n\n';
+  m += '## Human decision (machine-readable)\n```json\n' + JSON.stringify({
+    line_id: p.line_id,
+    decision: decision,
+    rejection_reason: decision === 'REJECTED' ? why : null,
+    decided_at_level: p.escalation_required,
+    decided_at: ts
+  }, null, 2) + '\n```\n\n';
+  m += '## Execute next\n';
+  m += decision === 'SIGNED'
+     ? '- Accounting: map to a journal entry in the ledger system — every required field is in the JSON above. No GL codes are assumed here; mapping stays in your chart of accounts.\n'
+     : '- Requester: correct or withdraw the submission; the reason above travels with it.\n';
+  m += '- If the next hand needs more — bank account, GL code, PO ref — that\'s a field, not a redesign. Anything that carries intent belongs in the packet.\n';
+  m += '- Audit ref: ' + p.cited_from.rule + ' · output/audit_log.txt\n\n';
+  m += '---\n';
+  m += '*This file carries the intent and the task together — that is why nothing is lost between hands, human or machine. Swap in real data and it becomes KFC\'s own context; the format is disposable, the discipline is not.*\n';
+  m += '*— Peak · built solo at Agentic AI Build Week 2026*\n';
+  return m;
+}
+function collapse(id, cls, text){
+  const c = document.getElementById('card-' + id);
+  c.innerHTML = '<div class="done-strip ' + cls + '">' + text + '</div>';
+}
+function signCard(id){
+  const p = PACKETS[id];
+  dl('handoff-' + id + '.md', mdFor(p, 'SIGNED', null));
+  collapse(id, 'ok', '&#10003; Signed — <b>handoff-' + id + '.md</b> downloaded · queued for accounting handoff (production: Digital Signature + journal mapping plug in here)');
+}
+function rejStart(id){
+  const p = PACKETS[id];
+  const box = document.getElementById('why-' + id);
+  const btns = box.querySelector('.why-btns');
+  btns.innerHTML = '';
+  [REJECT_WHY[p.status] || 'Flagged by review', 'Other…'].forEach(function(w){
+    const b = document.createElement('button');
+    b.className = 'whyb'; b.textContent = w;
+    b.onclick = function(){
+      let why = w;
+      if (w === 'Other…'){ why = prompt('Reason for rejection:') || ''; if (!why) return; }
+      dl('return-' + id + '.md', mdFor(p, 'REJECTED', why));
+      collapse(id, 'no', '&#10007; Rejected — reason: ' + why + ' · <b>return-' + id + '.md</b> downloaded, returned to requester');
+    };
+    btns.appendChild(b);
+  });
+  box.style.display = 'flex';
+}
+</script>
+
+</body></html>

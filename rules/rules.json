@@ -1,0 +1,39 @@
+{
+  "_comment": "EDITABLE RULE TEMPLATES. A finance user changes the values, not the code. These read in human language; they are NOT parsed from human language (that engine was killed on purpose). Each rule is deterministic — same input always gives same output — because real money cannot run on probability.",
+
+  "R-001": {
+    "name": "Duplicate payment check",
+    "plain_language": "Do not pay the same invoice twice. Compare every incoming line-item against (1) the paid-payments ledger and (2) other line-items in the same batch.",
+    "type": "duplicate",
+    "corpus": ["paid_ledger", "current_batch"],
+    "match_on": {
+      "strong_key": ["vendor_id", "invoice_number"],
+      "recurring_key": ["vendor_id", "store_id", "expense_type", "billing_period"]
+    },
+    "on_no_anchor": "unknown",
+    "_note_on_no_anchor": "If a line-item cannot be compared to anything (unknown vendor, no history), do NOT guess clean or duplicate — flag 'unknown' and send to a human."
+  },
+
+  "R-002": {
+    "name": "Bank-account-change fraud signal",
+    "plain_language": "If the bank account on an incoming payment does not match the vendor's account on file in master data, flag it. A changed payee account is the classic invoice-redirection fraud.",
+    "type": "bank_change",
+    "compare_field": "bank_account_number",
+    "source_of_truth": "vendor_master",
+    "on_vendor_not_in_master": "unknown"
+  },
+
+  "R-003": {
+    "name": "Threshold escalation routing",
+    "plain_language": "Route each request to the approval level its amount requires. Bigger amounts need higher sign-off. This proves the routing engine works without rebuilding the full 5-level paper chain.",
+    "type": "threshold",
+    "amount_field": "amount",
+    "currency": "VND",
+    "tiers": [
+      { "up_to": 5000000,   "escalation": "HOD" },
+      { "up_to": 20000000,  "escalation": "F&A" },
+      { "up_to": 50000000,  "escalation": "CA" },
+      { "up_to": null,      "escalation": "CA + Cashier" }
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "vendor_id": "V-LEASE-01",
+    "vendor_name": "Sao Mai Property Co. [MODEL]",
+    "expense_type": "rental",
+    "bank_name": "Vietcombank",
+    "bank_account_number": "41661403828",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-LEASE-02",
+    "vendor_name": "Nam Long Retail Spaces [MODEL]",
+    "expense_type": "rental",
+    "bank_name": "BIDV",
+    "bank_account_number": "51128555522",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-LEASE-03",
+    "vendor_name": "An Phu Mall Management [MODEL]",
+    "expense_type": "rental",
+    "bank_name": "ACB",
+    "bank_account_number": "48029355355",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-LEASE-04",
+    "vendor_name": "Hoa Binh Commercial JSC [MODEL]",
+    "expense_type": "rental",
+    "bank_name": "Techcombank",
+    "bank_account_number": "15459047871",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-ELEC-01",
+    "vendor_name": "EVN HCMC Power (model) [MODEL]",
+    "expense_type": "electricity",
+    "bank_name": "Vietcombank",
+    "bank_account_number": "86170333169",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-ELEC-02",
+    "vendor_name": "EVN Hanoi Power (model) [MODEL]",
+    "expense_type": "electricity",
+    "bank_name": "BIDV",
+    "bank_account_number": "71376125307",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-ELEC-03",
+    "vendor_name": "EVN Central Power (model) [MODEL]",
+    "expense_type": "electricity",
+    "bank_name": "Agribank",
+    "bank_account_number": "56771728953",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-WATER-01",
+    "vendor_name": "SAWACO Water (model) [MODEL]",
+    "expense_type": "water",
+    "bank_name": "Vietcombank",
+    "bank_account_number": "94572691308",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-WATER-02",
+    "vendor_name": "Hanoi Water Ltd (model) [MODEL]",
+    "expense_type": "water",
+    "bank_name": "BIDV",
+    "bank_account_number": "41790399263",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-SVC-01",
+    "vendor_name": "CleanPro Facility Services [MODEL]",
+    "expense_type": "service_fee",
+    "bank_name": "ACB",
+    "bank_account_number": "00595704795",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-SVC-02",
+    "vendor_name": "SecureGuard Vietnam [MODEL]",
+    "expense_type": "service_fee",
+    "bank_name": "Techcombank",
+    "bank_account_number": "14019116187",
+    "status": "active"
+  },
+  {
+    "vendor_id": "V-SVC-03",
+    "vendor_name": "GreenScape Maintenance [MODEL]",
+    "expense_type": "service_fee",
+    "bank_name": "MB Bank",
+    "bank_account_number": "40042892071",
+    "status": "active"
+  }
+]

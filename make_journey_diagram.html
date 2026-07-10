@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:#f4f4f5;color:#18181b;margin:0;width:1500px;height:1000px;overflow:hidden}
+ .top{background:#111;color:#fff;padding:16px 40px;display:flex;justify-content:space-between;align-items:center}
+ .top b{font-size:20px}.model{background:#b3141c;color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:4px}
+ .wrap{padding:26px 40px}
+ h1{font-size:26px;margin:0 0 4px;font-weight:800}
+ .sub{color:#52525b;font-size:15px;margin-bottom:20px}
+ .grid{display:grid;grid-template-columns:120px repeat(4,1fr);gap:10px}
+ .lane{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;border-radius:10px;flex-direction:column;gap:4px}
+ .lane small{font-weight:500;color:#71717a;font-size:11px}
+ .hlane{background:#ecfdf5;border:1px solid #bbf7d0;color:#15803d}
+ .alane{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8}
+ .bracket{border:2px solid;border-bottom:none;border-radius:10px 10px 0 0;height:34px;position:relative;margin:0 4px}
+ .bracket span{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#f4f4f5;padding:0 14px;font-size:12.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap}
+ .br-read{border-color:#d4d4d8;color:#71717a}
+ .br-leak{border-color:#b3141c;color:#b3141c}
+ .stagehead{text-align:center;font-size:12px;letter-spacing:1.5px;font-weight:800;color:#71717a;text-transform:uppercase;padding-bottom:2px}
+ .stagehead .n{display:inline-block;background:#18181b;color:#fff;border-radius:999px;width:20px;height:20px;line-height:20px;font-size:11px;margin-right:6px}
+ .cell{background:#fff;border:1px solid #e4e4e7;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.45;position:relative;min-height:118px}
+ .cell b{display:block;font-size:15px;margin-bottom:4px}
+ .cell.human{border-left:5px solid #15803d}
+ .cell.ai{border-left:5px solid #1d4ed8}
+ .cell.dim{background:#fafafa;color:#52525b;border-style:dashed}
+ .cell .tag{position:absolute;top:10px;right:12px;font-size:9.5px;font-weight:800;letter-spacing:1px;padding:2px 7px;border-radius:999px}
+ .built{background:#b3141c;color:#fff}
+ .design{background:#e4e4e7;color:#52525b}
+ .arrowrow{grid-column:2/6;display:flex;justify-content:space-between;align-items:center;color:#a1a1aa;font-size:20px;padding:0 60px}
+ .strip{margin-top:18px;background:#111;color:#fff;border-radius:12px;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+ .strip .was{color:#f87171;font-size:15px}.strip .now{color:#4ade80;font-size:15px}
+ .strip .arrow{color:#71717a;font-size:22px}
+ .mono{font-family:ui-monospace,Menlo,monospace}
+ .foot{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e4e4e7;padding:12px 40px;font-size:13px;color:#71717a}
+</style></head><body>
+<div class="top"><b>KFC-P1 · Agentic Finance Reviewer — the User / AI journey</b><span class="model">MODEL DATA</span></div>
+<div class="wrap">
+ <h1>One window. One click. A human decides everything that matters.</h1>
+ <div class="sub">Green lane = KFC finance staff · Blue lane = the agent · <span style="color:#b3141c;font-weight:700">BUILT</span> = working in this demo · DESIGN = production plug-in, spoken on the architecture · <b style="color:#18181b">The split is the design decision — these are two different problems.</b></div>
+ <div class="grid" style="row-gap:6px">
+  <div></div>
+  <div class="bracket br-read" style="grid-column:2/4"><span>READING DOCUMENTS — a solved problem; proven patterns plug in here</span></div>
+  <div class="bracket br-leak" style="grid-column:4/6"><span>WHERE THE MONEY ACTUALLY LEAKS — the real problem; built to pilot depth</span></div>
+  <div></div>
+  <div class="stagehead"><span class="n">1</span>SWEEP</div>
+  <div class="stagehead"><span class="n">2</span>EXTRACTION JUNCTION</div>
+  <div class="stagehead"><span class="n">3</span>REVIEW</div>
+  <div class="stagehead"><span class="n">4</span>HUMAN GATE</div>
+
+  <div class="lane hlane">👤 HUMAN<small>KFC Finance</small></div>
+  <div class="cell human dim"><span class="tag design">DESIGN</span><b>Does nothing</b>Invoices arrive on their own — no chasing paper across 250+ stores.</div>
+  <div class="cell human dim"><span class="tag design">DESIGN</span><b>Confirms the read</b>Side-by-side verify: extracted fields vs the document. Unclear = "unknown", human fixes.</div>
+  <div class="cell human"><span class="tag built">BUILT</span><b>One click</b>Opens the reviewer, runs the batch. That's the whole job here.</div>
+  <div class="cell human"><span class="tag built">BUILT</span><b>Reads 4 cards, signs</b>Reason + recommendation + ready escalation note per card → decide in ~30 sec. <b style="display:inline">✍ Sign</b> or Reject.</div>
+
+  <div class="lane alane">🤖 AGENT<small>rules + AI</small></div>
+  <div class="cell ai dim"><span class="tag design">DESIGN</span><b>Collects</b>Gathers e-invoices / PDFs from feeds, mailboxes, store folders into one place.</div>
+  <div class="cell ai dim"><span class="tag design">DESIGN</span><b>Extracts → typed JSON</b>Vision reads only what is printed; anything unclear returns null — never guessed.</div>
+  <div class="cell ai"><span class="tag built">BUILT</span><b>Triage 761 line-items</b><span class="mono">R-001</span> duplicate vs ledger+batch · <span class="mono">R-002</span> bank-change vs master · <span class="mono">R-003</span> routing. 757 clean · 4 flagged, every flag cited.</div>
+  <div class="cell ai"><span class="tag built">BUILT</span><b>Writes the case</b>Plain-language reason, advisory REJECT / HOLD, draft escalation note — grounded in the cited evidence. <b style="display:inline">Never approves.</b></div>
+ </div>
+ <div class="strip">
+  <span class="was">BEFORE — 5 hand-offs · paper chase · re-keying · ~2 days a month</span>
+  <span class="arrow">→</span>
+  <span class="now">AFTER — 1 review + 1 signature · minutes · full audit trail</span>
+ </div>
+</div>
+<div class="foot">Deterministic where money moves · AI where the reason is written · nothing is paid until a human signs</div>
+</body></html>

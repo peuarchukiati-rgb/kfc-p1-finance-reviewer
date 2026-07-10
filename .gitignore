@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+
+# local rehearsal aid
+demo/catch_map.json
+
+# internal working notes — local only
+SESSION_HANDOFF_*.md
+BUILD_MASTER_*.md
+.DS_Store

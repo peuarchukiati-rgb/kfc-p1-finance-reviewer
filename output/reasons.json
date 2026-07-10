@@ -1,0 +1,22 @@
+{
+  "R0011-L5": {
+    "reason": "Payment INV-2606-2239 for 9,553,000 VND to Thanh Cong Cleaning Co. was flagged under Rule R-001 because the vendor does not exist in the master data, leaving no approved record against which to verify the payment's legitimacy.",
+    "recommendation": "HOLD FOR VERIFICATION — the vendor cannot be validated without a master data record, and no basis exists to approve payment until the vendor is registered and confirmed.",
+    "escalation_note": "F&A: Please verify whether Thanh Cong Cleaning Co. is a legitimate, approved vendor before signing off on INV-2606-2239 for 9,553,000 VND — confirm that the vendor should be added to master data, that the invoice is supported by a valid contract or purchase order, and that the bank account details on file are correct."
+  },
+  "R0183-L5": {
+    "reason": "Payment INV-2606-2240 to vendor 'Phu My Hung Lease' for 5,388,000 VND was flagged under Rule R-001 because the vendor is not present in master data, meaning there is no approved vendor record against which to validate this payment.",
+    "recommendation": "HOLD FOR VERIFICATION — the vendor cannot be confirmed as an approved payee without a matching master data record, and no baseline exists to assess legitimacy of the invoice amount.",
+    "escalation_note": "F&A: Please verify whether 'Phu My Hung Lease' (Invoice INV-2606-2240, 5,388,000 VND) should be added to vendor master data with proper onboarding documentation, and confirm whether this invoice obligation is legitimate and properly authorized before approving payment."
+  },
+  "R0194-L3": {
+    "reason": "Payment INV-2606-2238 to Sao Mai Property Co. for 78,256,000 VND was flagged under rule R-002 because the payee account on the payment instruction (99988877766) does not match the vendor's master record account (41661403828), indicating a bank account change that has not been verified.",
+    "recommendation": "HOLD FOR VERIFICATION — a mismatched destination account on a payment of this size requires direct confirmation with the vendor before any funds are released.",
+    "escalation_note": "CA and Cashier: please verify with Sao Mai Property Co. through an independently sourced contact (not details supplied with the invoice) that account 99988877766 is their legitimate, authorised account before authorising payment of INV-2606-2238 for 78,256,000 VND; the master record currently holds account 41661403828 and no approved change has been recorded."
+  },
+  "R0288-L2": {
+    "reason": "Payment INV-2605-1418 to vendor Nam Long Retail Spaces for 40,085,000 VND has been flagged as a duplicate under rule R-001: the ledger shows this invoice was already paid under record PAID-00418.",
+    "recommendation": "REJECT — the invoice amount of 40,085,000 VND to Nam Long Retail Spaces appears to have already been settled per ledger entry PAID-00418, and processing it again would result in a double payment.",
+    "escalation_note": "CA: please verify that ledger entry PAID-00418 represents a completed, cleared payment to Nam Long Retail Spaces for invoice INV-2605-1418 (40,085,000 VND) before signing any approval or rejection of this transaction."
+  }
+}

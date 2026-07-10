@@ -1,0 +1,10 @@
+[2026-07-10 04:19:07.145Z] === KFC-P1 AI FINANCE REVIEWER — RUN START ===
+[2026-07-10 04:19:07.146Z] corpora: 12 vendors | 480 ledger anchors | 300 requests
+[2026-07-10 04:19:07.146Z] mode: structured MODEL data (post-extraction junction). No payment will be released — human-gate active.
+[2026-07-10 04:19:07.146Z] FLAG UNKNOWN | R0011-L5 | Thanh Cong Cleaning Co. [MODEL] | 9,553,000 VND | rule R-001 | vendor not in master data — no basis to compare, needs human | escalate: F&A
+[2026-07-10 04:19:07.148Z] FLAG UNKNOWN | R0183-L5 | Phu My Hung Lease [MODEL] | 5,388,000 VND | rule R-001 | vendor not in master data — no basis to compare, needs human | escalate: F&A
+[2026-07-10 04:19:07.148Z] FLAG BANK_CHANGE | R0194-L3 | Sao Mai Property Co. [MODEL] | 78,256,000 VND | rule R-002 | payee account 99988877766 != master 41661403828 | escalate: CA + Cashier
+[2026-07-10 04:19:07.149Z] FLAG DUPLICATE | R0288-L2 | Nam Long Retail Spaces [MODEL] | 40,085,000 VND | rule R-001 | invoice already PAID in ledger (PAID-00418) | escalate: CA
+[2026-07-10 04:19:07.150Z] === RUN COMPLETE ===
+[2026-07-10 04:19:07.150Z] reviewed 761 line-items | CLEAN 757 | DUPLICATE 1 | BANK_CHANGE 1 | UNKNOWN 2
+[2026-07-10 04:19:07.150Z] NO PAYMENT RELEASED. All items staged for human signature.

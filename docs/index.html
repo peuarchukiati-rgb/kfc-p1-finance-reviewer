@@ -202,6 +202,41 @@ const PG_SYSTEM = 'You are the AI reviewer inside a human-gated finance approval
 'rule that fired; the escalation level comes from the threshold rule (R-003). ' +
 'Reply with ONLY the JSON object, no fences, no preamble.';
 function pgEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+// Provider swap (finals card): detect provider from the pasted key, route to its
+// endpoint, same system prompt, same card. Unknown prefixes fall back to Anthropic —
+// identical to the submitted single-provider behavior.
+const PG_PROVIDERS = true;
+const PG_ENDPOINTS = {
+  anthropic: {
+    name: 'Claude',
+    url: 'https://api.anthropic.com/v1/messages',
+    headers: k => ({
+      'Content-Type': 'application/json',
+      'x-api-key': k,
+      'anthropic-version': '2023-06-01',
+      // Required for calling the Anthropic API directly from a browser.
+      // The key stays in the user's browser; nothing is proxied through us.
+      'anthropic-dangerous-direct-browser-access': 'true'
+    }),
+    body: (sys, usr) => ({ model: 'claude-sonnet-4-6', max_tokens: 1024, system: sys,
+      messages: [{ role: 'user', content: usr }] }),
+    extract: d => d.content.filter(b => b.type === 'text').map(b => b.text).join('\n')
+  },
+  openai: {
+    name: 'GPT-5.5',
+    url: 'https://api.openai.com/v1/chat/completions',
+    headers: k => ({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + k }),
+    body: (sys, usr) => ({ model: 'gpt-5.5',
+      messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }] }),
+    extract: d => d.choices[0].message.content
+  }
+};
+function pgProvider(key){
+  if (!PG_PROVIDERS) return 'anthropic';
+  if (key.startsWith('sk-ant-')) return 'anthropic';
+  if (key.startsWith('sk-')) return 'openai';
+  return 'anthropic';
+}
 function pgEscalation(amount){
   for (const [upTo, level] of PG_TIERS) if (upTo === null || amount <= upTo) return level;
   return 'CA + Cashier';
@@ -250,27 +285,20 @@ async function pgRun(){
   }
 }
 async function pgReason(src, vendorName, evidence, esc, key){
+  const cfg = PG_ENDPOINTS[pgProvider(key)];
   const el = document.getElementById('pg-reason');
   el.className = 'reason pg-writing';
-  el.innerHTML = '<img src="spark.gif" alt="" style="height:24px;vertical-align:-7px;margin-right:8px">Claude is writing — from ONLY the evidence cited above…';
+  el.innerHTML = '<img src="spark.gif" alt="" style="height:24px;vertical-align:-7px;margin-right:8px">' + cfg.name + ' is writing — from ONLY the evidence cited above…';
   const facts = 'Finding: DUPLICATE\nVendor: ' + vendorName + '\nInvoice: ' + src.invoice_number +
     '\nAmount: ' + src.amount.toLocaleString('en-US') + ' VND\nRule: R-001' +
     '\nEvidence (verbatim): ' + evidence + '\nEscalation required: ' + esc;
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 60000);
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(cfg.url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        // Required for calling the Anthropic API directly from a browser.
-        // The key stays in the user's browser; nothing is proxied through us.
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1024, system: PG_SYSTEM,
-        messages: [{ role: 'user', content: facts }] }),
+      headers: cfg.headers(key),
+      body: JSON.stringify(cfg.body(PG_SYSTEM, facts)),
       signal: ctrl.signal
     });
     if (!res.ok){
@@ -278,17 +306,20 @@ async function pgReason(src, vendorName, evidence, esc, key){
       throw new Error('API ' + res.status + detail);
     }
     const data = await res.json();
-    const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
+    const text = cfg.extract(data);
     const clean = text.replace(/```json|```/g, '').trim();
     let ai; try { ai = JSON.parse(clean); } catch { ai = { reason: clean }; }
     if (!ai || typeof ai !== 'object') ai = { reason: clean };
     el.className = 'reason pg-live';
     el.textContent = ai.reason || clean;
-    document.getElementById('pg-rlabel').innerHTML = 'Reviewer\'s read — <span class="pg-livetag">⚡ written live by Claude, just now — check every number against the citation above</span>';
+    document.getElementById('pg-rlabel').innerHTML = 'Reviewer\'s read — <span class="pg-livetag">⚡ written live by ' + cfg.name + ', just now — check every number against the citation above</span>';
     let extra = '';
     if (ai.recommendation) extra += '<div class="rec">AI recommendation <span>(advisory — you sign)</span>: <b>' + pgEsc(ai.recommendation) + '</b></div>';
     if (ai.escalation_note) extra += '<div class="note-block"><span class="note-head">Draft escalation note (ready to send to ' + pgEsc(esc) + ')</span>' + pgEsc(ai.escalation_note) + '</div>';
-    extra += '<div style="color:#3f3f46;font-style:italic;font-size:13.5px;line-height:1.65;margin-top:14px;padding:10px 14px;border-left:3px solid #f59e0b;background:#fffdf5;border-radius:0 8px 8px 0">Written from only the cited evidence — inventing a number, name, or date is against its rules. This demo runs Claude because I built with Claude; in production, this seat is whatever AI lives in your stack. <b>The model is swappable; the discipline is not.</b></div>';
+    const pgMeta = cfg.name === 'Claude'
+      ? 'This demo runs Claude because I built with Claude; in production, this seat is whatever AI lives in your stack.'
+      : 'You just watched ' + cfg.name + ' take the same seat Claude held a moment ago — same rules, same evidence, same card.';
+    extra += '<div style="color:#3f3f46;font-style:italic;font-size:13.5px;line-height:1.65;margin-top:14px;padding:10px 14px;border-left:3px solid #f59e0b;background:#fffdf5;border-radius:0 8px 8px 0">Written from only the cited evidence — inventing a number, name, or date is against its rules. ' + pgMeta + ' <b>The model is swappable; the discipline is not.</b></div>';
     document.getElementById('pg-ai-extra').innerHTML = extra;
   } catch (e) {
     const why = e.name === 'AbortError' ? 'timed out after 60s' : e.message;

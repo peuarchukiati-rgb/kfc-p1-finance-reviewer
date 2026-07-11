@@ -209,6 +209,7 @@ const PG_PROVIDERS = true;
 const PG_ENDPOINTS = {
   anthropic: {
     name: 'Claude',
+    spinner: 'bot-claude.gif',
     url: 'https://api.anthropic.com/v1/messages',
     headers: k => ({
       'Content-Type': 'application/json',
@@ -224,6 +225,7 @@ const PG_ENDPOINTS = {
   },
   openai: {
     name: 'GPT-5.5',
+    spinner: 'bot-gpt.gif',
     url: 'https://api.openai.com/v1/chat/completions',
     headers: k => ({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + k }),
     body: (sys, usr) => ({ model: 'gpt-5.5',
@@ -288,7 +290,7 @@ async function pgReason(src, vendorName, evidence, esc, key){
   const cfg = PG_ENDPOINTS[pgProvider(key)];
   const el = document.getElementById('pg-reason');
   el.className = 'reason pg-writing';
-  el.innerHTML = '<img src="spark.gif" alt="" style="height:24px;vertical-align:-7px;margin-right:8px">' + cfg.name + ' is writing — from ONLY the evidence cited above…';
+  el.innerHTML = '<img src="' + cfg.spinner + '" alt="" style="height:28px;vertical-align:-8px;margin-right:8px">' + cfg.name + ' is writing — from ONLY the evidence cited above…';
   const facts = 'Finding: DUPLICATE\nVendor: ' + vendorName + '\nInvoice: ' + src.invoice_number +
     '\nAmount: ' + src.amount.toLocaleString('en-US') + ' VND\nRule: R-001' +
     '\nEvidence (verbatim): ' + evidence + '\nEscalation required: ' + esc;

@@ -208,7 +208,8 @@ function pgEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').r
 const PG_PROVIDERS = true;
 const PG_ENDPOINTS = {
   anthropic: {
-    name: 'Claude',
+    name: 'Claude Sonnet 4.6',
+    color: '#b3141c',
     spinner: 'bot-claude.gif',
     url: 'https://api.anthropic.com/v1/messages',
     headers: k => ({
@@ -224,11 +225,12 @@ const PG_ENDPOINTS = {
     extract: d => d.content.filter(b => b.type === 'text').map(b => b.text).join('\n')
   },
   openai: {
-    name: 'GPT-5.5',
+    name: 'GPT-4o mini',
+    color: '#0e7db8',
     spinner: 'bot-gpt.gif',
     url: 'https://api.openai.com/v1/chat/completions',
     headers: k => ({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + k }),
-    body: (sys, usr) => ({ model: 'gpt-5.5',
+    body: (sys, usr) => ({ model: 'gpt-4o-mini',
       messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }] }),
     extract: d => d.choices[0].message.content
   }
@@ -290,6 +292,7 @@ async function pgReason(src, vendorName, evidence, esc, key){
   const cfg = PG_ENDPOINTS[pgProvider(key)];
   const el = document.getElementById('pg-reason');
   el.className = 'reason pg-writing';
+  el.style.color = cfg.color;
   el.innerHTML = '<img src="' + cfg.spinner + '" alt="" style="height:28px;vertical-align:-8px;margin-right:8px">' + cfg.name + ' is writing — from ONLY the evidence cited above…';
   const facts = 'Finding: DUPLICATE\nVendor: ' + vendorName + '\nInvoice: ' + src.invoice_number +
     '\nAmount: ' + src.amount.toLocaleString('en-US') + ' VND\nRule: R-001' +
@@ -313,19 +316,22 @@ async function pgReason(src, vendorName, evidence, esc, key){
     let ai; try { ai = JSON.parse(clean); } catch { ai = { reason: clean }; }
     if (!ai || typeof ai !== 'object') ai = { reason: clean };
     el.className = 'reason pg-live';
+    el.style.color = '';
     el.textContent = ai.reason || clean;
-    document.getElementById('pg-rlabel').innerHTML = 'Reviewer\'s read — <span class="pg-livetag">⚡ written live by ' + cfg.name + ', just now — check every number against the citation above</span>';
+    document.getElementById('pg-rlabel').innerHTML = 'Reviewer\'s read — <span class="pg-livetag">⚡ written live by <span style="background:' + cfg.color + ';color:#fff;padding:1px 7px;border-radius:5px;font-weight:800">' + cfg.name + '</span>, just now — check every number against the citation above</span>';
     let extra = '';
     if (ai.recommendation) extra += '<div class="rec">AI recommendation <span>(advisory — you sign)</span>: <b>' + pgEsc(ai.recommendation) + '</b></div>';
     if (ai.escalation_note) extra += '<div class="note-block"><span class="note-head">Draft escalation note (ready to send to ' + pgEsc(esc) + ')</span>' + pgEsc(ai.escalation_note) + '</div>';
-    const pgMeta = cfg.name === 'Claude'
-      ? 'This demo runs Claude because I built with Claude; in production, this seat is whatever AI lives in your stack.'
-      : 'You just watched ' + cfg.name + ' take the same seat Claude held a moment ago — same rules, same evidence, same card.';
+    const pgName = '<b style="color:' + cfg.color + '">' + cfg.name + '</b>';
+    const pgMeta = pgProvider(key) === 'anthropic'
+      ? 'This demo runs ' + pgName + ' because I built with Claude; in production, this seat is whatever AI lives in your stack.'
+      : 'You just watched ' + pgName + ' take the same seat Claude held a moment ago — same rules, same evidence, same card.';
     extra += '<div style="color:#3f3f46;font-style:italic;font-size:13.5px;line-height:1.65;margin-top:14px;padding:10px 14px;border-left:3px solid #f59e0b;background:#fffdf5;border-radius:0 8px 8px 0">Written from only the cited evidence — inventing a number, name, or date is against its rules. ' + pgMeta + ' <b>The model is swappable; the discipline is not.</b></div>';
     document.getElementById('pg-ai-extra').innerHTML = extra;
   } catch (e) {
     const why = e.name === 'AbortError' ? 'timed out after 60s' : e.message;
     el.className = 'reason pending';
+    el.style.color = '';
     el.textContent = 'AI reason pending (' + why + ') — the deterministic catch above is complete without it';
   } finally {
     clearTimeout(timer);
